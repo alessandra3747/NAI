@@ -5,5 +5,14 @@
 # NAI
 ### Tools of AI
 This repository contains solutions to the exercises for the NAI (Tools of AI) course during studies on [PJAIT](https://pja.edu.pl/).
+<br></br>
+<div align="left">
+  
+**MPP01 -> k-NN Algorithm** , iris problem implementation
+
+**MPP02 -> Perceptron** , iris problem implementation
+
+**MPP03 -> Single-layer neural network** , language classifier
+
 
 </div>
