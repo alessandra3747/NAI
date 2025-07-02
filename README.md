@@ -8,11 +8,14 @@ This repository contains solutions to the exercises for the NAI (Tools of AI) co
 <br></br>
 <div align="left">
   
-**MPP01 -> k-NN Algorithm** , iris problem implementation
+**MPP01 -> k-NN Algorithm** , Iris Problem implementation
 
-**MPP02 -> Perceptron** , iris problem implementation
+**MPP02 -> Perceptron** , Iris Problem implementation
 
-**MPP03 -> Single-layer neural network** , language classifier
+**MPP03 -> Single-layer neural network** , Language Classifier
 
+**MPP04 -> Naive Bayes classifier** , Iris Problem implementation
+
+**MPP06 -> Brute-force and Heuristic approach** , The Knapsack Problem implementation
 
 </div>
