@@ -1,0 +1,86 @@
+CLASSIFIER
+
+private final List<Iris> dataSet;
+private final List<String> classifications;
+
+
+KONSTRUKTOR
+- public Classifier(List<Iris> dataSet)
+
+
+METODY
+- public String classify (Iris iris) :
+
+	.Stream po każdej klasie classifications wywołując metodę getProbability i licząc jej prawdopodobieństwo
+
+	.double[] probabilities <- dla każdej klasy liczy prawdopodobieństwo, że dany obiekt należy do niej
+
+	.Szuka indeksu klasy o największym prawdopodobieństwie i zwraca classifications.get(maxIndex).
+
+
+- double getProbability(Iris iris) :
+
+	.Oblicza pełne prawdopodobieństwo P(C) * P(x1|C) * P(x2|C) * ... dla konkretnej klasy
+
+	.List<Iris> matchingIrises <- tylko te dane, które mają taką samą klasę jak iris
+
+	.List<Double> attributeProbabilities <- lista prawdopodobieństw warunkowych dla każdego atrybutu (czyli P(x1|C), P(x2|C), itd.)
+						uzyskana wywołując metodę computeAttributeProbabilities(...)
+
+	.smoothIfNeeded(matchingIrises.size(), attributeProbabilities) <- jeżeli któreś z P(xi|C) wynosi zero
+
+	.Oblicza P(C) i mnoży przez P(xi|C) dla każdego atrybutu
+
+
+- List<Double> computeAttributeProbabilities(List<Iris> matchingIrises, double[] attributes)
+
+	.Dla każdego atrybutu sprawdza, jak często wartość xi pojawia się w zbiorze matchingIrises (czyli P(xi|C))
+	
+	.Dla każdego indeksu atrybutu: pobiera wartość atrybutu, liczy ile razy dokładnie taka wartość występuje w zbiorze matchingIrises
+	 Dodaje count / liczba wszystkich pasujących do listy jako P(xi|C).
+
+
+- void smoothIfNeeded(double valueCount, List<Double> attributeProbabilities)
+	
+	.Sprawdza, czy w którejś pozycji attributeProbabilities jest 0.
+	
+	.Jeśli znajdzie zero, to: liczy, ile różnych wartości danego atrybutu jest w całym zbiorze, zastosowuje wygładzenie Laplasa
+
+	.Jeśli żadne zero nie wystąpiło, to na siłę stosuje smoothing na pierwszym atrybucie
+
+
+- public List<String> getClassifications()
+
+
+
+
+PRZYDATNE INFOMRACJE :
+
+1. Czy Twój klasyfikator korzysta z rozkładu prawdopodobieństwa?
+Nie. Używam prostego podejścia opartego na zliczaniu częstości — obliczam empiryczne prawdopodobieństwa bez modelowania rozkładów takich jak normalny czy wykładniczy.
+
+ 2. Czy stosujesz dyskretyzację danych?
+Nie, moja implementacja nie dzieli danych na przedziały. Porównuję dokładne wartości atrybutów – np. 5.1 == 5.1. Nie grupuję ich w koszyki.
+
+3. Jak liczysz prawdopodobieństwo P(x|C)?
+Liczę, ile razy dana wartość atrybutu występuje w klasie C i dzielę przez liczbę elementów tej klasy. Gdy wartość nie występuje, stosuję wygładzanie Laplace’a.
+
+4. Co się stanie, jeśli nie zastosujesz wygładzania?
+Gdy choć jeden z atrybutów będzie miał prawdopodobieństwo równe 0, cała końcowa szansa na daną klasę będzie równa 0 — nawet jeśli inne atrybuty silnie na nią wskazują. To prowadzi do błędnej klasyfikacji.
+
+5. Jak liczysz końcowe prawdopodobieństwo dla danej klasy?
+Mnożę prawdopodobieństwo klasy P(C) przez iloczyn prawdopodobieństw każdego atrybutu P(xi | C).
+Wynik to P(C) * P(x1|C) * P(x2|C) * ... * P(xn|C).
+
+6. Czy Twój klasyfikator jest deterministyczny?
+Tak, jeśli dostanie te same dane wejściowe i treningowe, to zawsze da taki sam wynik. Nie używam żadnych losowych elementów.
+
+7. Czy Twój klasyfikator skaluje dane?
+Nie, nie stosuję standaryzacji ani normalizacji. Działa on na surowych danych liczbowych.
+
+8. Co się stanie, jeśli wektor wejściowy zawiera wartość, która nie występuje w zbiorze treningowym?
+Bez wygładzania Laplace’a – prawdopodobieństwo wynosi 0, cały wynik też. Dzięki wygładzaniu – przypisujemy małe, ale niezerowe prawdopodobieństwo.
+
+9. Czy Twoja metoda classify() może zwrócić dwie klasy?
+Nie – zwraca jedną klasę o największym prawdopodobieństwie. W przypadku remisu wybierze tę, która pojawiła się wcześniej na liście.
+

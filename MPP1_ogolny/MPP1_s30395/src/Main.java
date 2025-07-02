@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,8 +15,8 @@ public class Main {
         //wczytanie parametru k
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Podaj wartość parametru k: ");
-        int k = sc.nextInt();;
+        System.out.print("Podaj wartość parametru k: "); 
+        int k = sc.nextInt();
 
         while(k <= 0) {
             System.out.print("Parametr k musi być większy od 0. Podaj poprawną wartość parametru k: ");
@@ -35,7 +34,6 @@ public class Main {
         for (Iris iris : testSet) {
 
             String decision = classify(iris, trainingSet, k);
-
             if (decision.equals(iris.getDecision()))
                 correctlyClassified++;
 
@@ -88,7 +86,6 @@ public class Main {
             neighbourFrequency.put(neighbourDecision, neighbourFrequency.getOrDefault(neighbourDecision, 1) + 1);
 
         }
-
         return Collections.max(neighbourFrequency.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
